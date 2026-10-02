@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoch im Norden – Forum</title>
+
+  <style>
+    :root {
+      --navy: #082c46;
+      --blue: #0b5d7a;
+      --light-blue: #dff3f8;
+      --ice: #f4fbfd;
+      --white: #ffffff;
+      --text: #173042;
+      --muted: #6b7f8c;
+      --border: #d8e5ea;
+      --danger: #c0392b;
+      --shadow: 0 10px 30px rgba(8, 44, 70, 0.10);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(rgba(244, 251, 253, 0.94), rgba(244, 251, 253, 0.94)),
+        radial-gradient(circle at top, #bde5ef, #f4fbfd 60%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background:
+        linear-gradient(rgba(8, 44, 70, 0.90), rgba(11, 93, 122, 0.90)),
+        linear-gradient(135deg, #0a3654, #1685a8);
+      color: white;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-icon {
+      font-size: 42px;
+    }
+
+    .logo h1 {
+      font-size: 25px;
+      margin-bottom: 3px;
+    }
+
+    .logo p {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    nav button {
+      background: transparent;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    nav button:hover,
+    nav button.active {
+      background: rgba(255,255,255,0.15);
+    }
+
+    /* Main */
+    main {
+      max-width: 1200px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #ffffff, #e8f7fa);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 35px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "⚓";
+      position: absolute;
+      right: 35px;
+      bottom: -20px;
+      font-size: 130px;
+      opacity: 0.06;
+    }
+
+    .hero h2 {
+      font-size: 32px;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 700px;
+      line-height: 1.6;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .search {
+      flex: 1;
+      min-width: 230px;
+      position: relative;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .search input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(11, 93, 122, 0.1);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--navy);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--navy);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--ice);
+    }
+
+    /* Categories */
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .category {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 5px 15px rgba(8, 44, 70, 0.05);
+    }
+
+    .category:hover {
+      transform: translateY(-3px);
+      border-color: #9fc9d5;
+      box-shadow: var(--shadow);
+    }
+
+    .category-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .category h3 {
+      color: var(--navy);
+      margin-bottom: 5px;
+    }
+
+    .category p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* Forum */
+    .forum-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 25px;
+      align-items: start;
+    }
+
+    .section {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-header h2 {
+      color: var(--navy);
+      font-size: 20px;
+    }
+
+    /* Posts */
+    .post {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      transition: 0.2s;
+    }
+
+    .post:last-child {
+      border-bottom: none;
+    }
+
+    .post:hover {
+      background: #fbfeff;
+    }
+
+    .post-top {
+      display: flex;
+      gap: 15px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), #63b7ca);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .post-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .post-title {
+      color: var(--navy);
+      font-size: 18px;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+
+    .post-title:hover {
+      color: var(--blue);
+    }
+
+    .post-meta {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .post-text {
+      color: #415966;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .post-bottom {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 13px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--light-blue);
+      color: var(--blue);
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .post-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 7px;
+    }
+
+    .small-btn {
+      border: 1px solid var(--border);
+      background: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .small-btn:hover {
+      background: var(--ice);
+    }
+
+    .delete-btn {
+      color: var(--danger);
+    }
+
+    /* Sidebar */
+    .sidebar-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar-card h3 {
+      color: var(--navy);
+      margin-bottom: 15px;
+    }
+
+    .stats {
+      display: grid;
+      gap: 10px;
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .stat:last-child {
+      border-bottom: none;
+    }
+
+    .stat span:last-child {
+      font-weight: bold;
+      color: var(--blue);
+    }
+
+    .rules {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .rules li {
+      margin-left: 18px;
+      margin-bottom: 7px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 28, 43, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 500;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(650px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.25);
+    }
+
+    .modal-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      color: var(--navy);
+    }
+
+    .close {
+      border: none;
+      background: transparent;
+      font-size: 28px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    form {
+      padding: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+      font-size: 14px;
+      color: var(--navy);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font: inherit;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(11, 93, 122, 0.08);
+    }
+
+    .form-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Empty */
+    .empty {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      font-size: 45px;
+      margin-bottom: 10px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: var(--navy);
+      color: white;
+      padding: 14px 18px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: 0.3s;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 25px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .forum-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h2 {
+        font-size: 26px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      main {
+        padding: 0 12px;
+        margin-top: 20px;
+      }
+
+      .hero {
+        padding: 25px 20px;
+      }
+
+      .post {
+        padding: 15px;
+      }
+
+      .post-top {
+        gap: 10px;
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+        font-size: 15px;
+      }
+
+      .post-actions {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .post-actions button {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+
+    <div class="logo">
+      <div class="logo-icon">⚓</div>
+      <div>
+        <h1>Hoch im Norden</h1>
+        <p>Das Forum für den echten Norden</p>
+      </div>
+    </div>
+
+    <nav>
+      <button class="active" onclick="showAll()">Forum</button>
+      <button onclick="scrollToCategories()">Kategorien</button>
+      <button onclick="openModal()">Neuer Beitrag</button>
+    </nav>
+
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <h2>🌊 Moin und Herzlich Willkommen!</h2>
+    <p>
+      Tausche dich mit anderen Nordlichtern aus. Ob Polizei, Feuerwehr,
+      Straßenmeisterei, Rettungsdienst oder der Luftrettung.
+      zum Norden – hier ist Platz für eure Geschichten, Tipps und Fragen.
+    </p>
+  </section>
+
+  <div class="toolbar">
+    <div class="search">
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="🔎 Beiträge durchsuchen..."
+        oninput="renderPosts()"
+      >
+    </div>
+
+    <select id="categoryFilter" onchange="renderPosts()">
+      <option value="Alle">Alle Kategorien</option>
+      <option value="Nordsee">Polizei</option>
+      <option value="Ostsee">Feuerwehr</option>
+      <option value="Hamburg">Luftrettung</option>
+      <option value="Schleswig-Holstein">Straßenmeisterei</option>
+      <option value="Niedersachsen">Rettungsdienst</option>
+    </select>
+
+    <button class="btn btn-primary" onclick="openModal()">
+      + Beitrag erstellen
+    </button>
+  </div>
+
+  <section class="categories" id="categories">
+
+    <div class="category" onclick="filterCategory('Nordsee')">
+      <div class="category-icon">&#128659</div>
+      <h3>Polizei</h3>
+    <a href="https://discord.gg/GnEGAxqzV7" target="_blank" rel="noopener noreferrer">
+  💬 Zum Discord
+</a>
+    </div>
+
+    <div class="category" onclick="filterCategory('Ostsee')">
+      <div class="category-icon">&#128658</div>
+      <h3>Feuerwehr</h3>
+  <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer">
+  💬 Zum Discord
+</a>
+    </div>
+
+    <div class="category" onclick="filterCategory('Hamburg')">
+      <div class="category-icon">&#128679</div>
+      <h3>Straßenmeisterei</h3>
+  <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer">
+  💬 Zum Discord
+</a>
+    </div>
+
+    <div class="category" onclick="filterCategory('Schleswig-Holstein')">
+      <div class="category-icon">🏡</div>
+      <h3>Technik</h3>
+  <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer">
+  💬 Zum Discord
+</a>
+    </div>
+
+    <div class="category" onclick="filterCategory('Schleswig-Holstein')">
+      <div class="category-icon">&#127973</div>
+      <h3>Notaufnahme</h3>
+  <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer">
+  💬 Zum Discord
+</a>
+    </div>
+
+    <div class="category" onclick="filterCategory('Niedersachsen')">
+      <div class="category-icon">&#128657</div>
+      <h3>Rettungsdienst</h3>
+<a href="https://discord.gg/" target="_blank" rel="noopener noreferrer">
+  💬 Zum Discord
+</a>
+    </div>
+
+    <div class="category" onclick="filterCategory('Freizeit')">
+      <div class="category-icon">&#128641</div>
+      <h3>Luftrettung</h3>
+  <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer">
+  💬 Zum Discord
+</a>
+    </div>
+
+  </section>
+
+  <div class="forum-layout">
+
+    <section class="section">
+
+      <div class="section-header">
+        <h2>💬 Aktuelle Diskussionen</h2>
+        <span id="postCount">0 Beiträge</span>
+      </div>
+
+      <div id="postsContainer"></div>
+
+    </section>
+
+    <aside>
+
+      <div class="sidebar-card">
+        <h3>📊 Forum-Statistik</h3>
+
+        <div class="stats">
+          <div class="stat">
+            <span>Beiträge</span>
+            <span id="statPosts">0</span>
+          </div>
+
+          <div class="stat">
+            <span>Kategorien</span>
+            <span>7</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>📜 Forum-Regeln</h3>
+
+        <ul class="rules">
+          <li>Bleibt freundlich und respektvoll.</li>
+          <li>Keine persönlichen Daten veröffentlichen.</li>
+          <li>Keine Beleidigungen oder Spam.</li>
+          <li>Beiträge sollten zum Thema passen.</li>
+          <li>Habt Spaß und sagt ruhig öfter „Moin!“ 🌊</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>🌤️ Nordischer Spruch</h3>
+        <p class="rules">
+          „Wat mutt, dat mutt.“<br><br>
+          Manchmal braucht man eben ein bisschen nordische Gelassenheit.
+        </p>
+      </div>
+
+    </aside>
+
+  </div>
+
+</main>
+
+<footer>
+  ⚓ Hoch im Norden · Ein kleines Community-Forum · Moin!
+</footer>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+      <h2>✍️ Neuer Beitrag</h2>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+
+    <form id="postForm">
+
+      <div class="form-group">
+        <label for="author">Patrick - Inhaber von Hoch im Norden</label>
+        <input
+          id="author"
+          type="text"
+          placeholder="z. B. Nordlicht87"
+          maxlength="30"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="title">Forum</label>
+        <input
+          id="title"
+          type="text"
+          placeholder="Worum geht es?"
+          maxlength="80"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="category">Kategorie</label>
+
+        <select id="category" required>
+          <option value="Nordsee">Polizei</option>
+          <option value="Ostsee">Feuerwehr</option>
+          <option value="Hamburg">Straßenmeisterei</option>
+          <option value="Schleswig-Holstein">Technik</option>
+          <option value="Niedersachsen">Rettungsdienst</option>
+          <option value="Freizeit">Luftrettung</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="content">Beitrag</label>
+
+        <textarea
+          id="content"
+          placeholder="Schreib hier deinen Beitrag..."
+          maxlength="2000"
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          onclick="closeModal()"
+        >
+          Abbrechen
+        </button>
+
+        <button type="submit" class="btn btn-primary">
+          Beitrag veröffentlichen
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+  /* =====================================================
+     DEMO-DATEN
+     ===================================================== */
+
+  const defaultPosts = [
+    {
+      id: 1,
+      author: "MoinMoin",
+      title: "Welche Nordseeinsel könnt ihr empfehlen?",
+      category: "Nordsee",
+      content: "Ich möchte im Sommer ein paar Tage an die Nordsee. Welche Insel gefällt euch besonders gut und warum?",
+      date: "Heute, 18:42",
+      replies: 12
+    },
+    {
+      id: 2,
+      author: "Elbkind",
+      title: "Schöne Spazierwege an der Elbe",
+      category: "Hamburg",
+      content: "Kennt jemand schöne Wege an der Elbe, die auch für einen entspannten Nachmittag geeignet sind?",
+      date: "Heute, 16:20",
+      replies: 8
+    },
+    {
+      id: 3,
+      author: "Nordlicht",
+      title: "Fahrradtour zwischen den Meeren",
+      category: "Schleswig-Holstein",
+      content: "Ich plane eine längere Fahrradtour durch Schleswig-Holstein. Habt ihr Tipps für schöne Strecken?",
+      date: "Gestern, 21:15",
+      replies: 17
+    },
+    {
+      id: 4,
+      author: "Küstenkind",
+      title: "Was macht ihr bei schlechtem Wetter?",
+      category: "Freizeit",
+      content: "Regen gehört im Norden ja irgendwie dazu. Welche Unternehmungen könnt ihr bei schlechtem Wetter empfehlen?",
+      date: "Gestern, 14:03",
+      replies: 23
+    }
+  ];
+
+
+  /* =====================================================
+     DATEN LADEN
+     ===================================================== */
+
+  let posts = JSON.parse(
+    localStorage.getItem("hochImNordenPosts")
+  ) || defaultPosts;
+
+
+  /* =====================================================
+     POSTS ANZEIGEN
+     ===================================================== */
+
+  function renderPosts() {
+
+    const container = document.getElementById("postsContainer");
+
+    const search =
+      document.getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
+
+    const category =
+      document.getElementById("categoryFilter").value;
+
+    let filtered = posts.filter(post => {
+
+      const matchesSearch =
+        post.title.toLowerCase().includes(search) ||
+        post.content.toLowerCase().includes(search) ||
+        post.author.toLowerCase().includes(search);
+
+      const matchesCategory =
+        category === "Alle" ||
+        post.category === category;
+
+      return matchesSearch && matchesCategory;
+    });
+
+
+    document.getElementById("postCount").textContent =
+      `${filtered.length} ${filtered.length === 1 ? "Beitrag" : "Beiträge"}`;
+
+    document.getElementById("statPosts").textContent =
+      posts.length;
+
+
+    if (filtered.length === 0) {
+
+      container.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">🌊</div>
+          <h3>Keine Beiträge gefunden</h3>
+          <p>Vielleicht möchtest du selbst eine Diskussion starten?</p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML = filtered.map(post => {
+
+      const initials = getInitials(post.author);
+
+      return `
+        <article class="post">
+
+          <div class="post-top">
+
+            <div class="avatar">
+              ${escapeHTML(initials)}
+            </div>
+
+            <div class="post-content">
+
+              <h3
+                class="post-title"
+                onclick="showPost(${post.id})"
+              >
+                ${escapeHTML(post.title)}
+              </h3>
+
+              <div class="post-meta">
+                Von <strong>${escapeHTML(post.author)}</strong>
+                · ${escapeHTML(post.date)}
+              </div>
+
+              <p class="post-text">
+                ${escapeHTML(post.content)}
+              </p>
+
+              <div class="post-bottom">
+
+                <span class="tag">
+                  ${escapeHTML(post.category)}
+                </span>
+
+                <span class="post-meta">
+                  💬 ${post.replies || 0} Antworten
+                </span>
+
+                <div class="post-actions">
+
+                  <button
+                    class="small-btn"
+                    onclick="likePost(${post.id})"
+                  >
+                    👍 Gefällt mir
+                  </button>
+
+                  <button
+                    class="small-btn delete-btn"
+                    onclick="deletePost(${post.id})"
+                  >
+                    Löschen
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+      `;
+
+    }).join("");
+  }
+
+
+  /* =====================================================
+     BEITRAG ERSTELLEN
+     ===================================================== */
+
+  document
+    .getElementById("postForm")
+    .addEventListener("submit", function(event) {
+
+      event.preventDefault();
+
+      const author =
+        document.getElementById("author").value.trim();
+
+      const title =
+        document.getElementById("title").value.trim();
+
+      const category =
+        document.getElementById("category").value;
+
+      const content =
+        document.getElementById("content").value.trim();
+
+
+      if (!author || !title || !content) {
+        showToast("Bitte alle Felder ausfüllen.");
+        return;
+      }
+
+
+      const newPost = {
+
+        id: Date.now(),
+
+        author: author,
+
+        title: title,
+
+        category: category,
+
+        content: content,
+
+        date: "Gerade eben",
+
+        replies: 0
+      };
+
+
+      posts.unshift(newPost);
+
+      savePosts();
+
+      renderPosts();
+
+      closeModal();
+
+      this.reset();
+
+      showToast("Dein Beitrag wurde veröffentlicht! 🌊");
+    });
+
+
+  /* =====================================================
+     BEITRAG LÖSCHEN
+     ===================================================== */
+
+  function deletePost(id) {
+
+    const post = posts.find(p => p.id === id);
+
+    if (!post) return;
+
+    const confirmed = confirm(
+      `Möchtest du den Beitrag "${post.title}" wirklich löschen?`
+    );
+
+    if (!confirmed) return;
+
+    posts = posts.filter(p => p.id !== id);
+
+    savePosts();
+
+    renderPosts();
+
+    showToast("Beitrag wurde gelöscht.");
+  }
+
+
+  /* =====================================================
+     LIKE
+     ===================================================== */
+
+  function likePost(id) {
+
+    const post = posts.find(p => p.id === id);
+
+    if (!post) return;
+
+    post.replies = (post.replies || 0) + 1;
+
+    savePosts();
+
+    renderPosts();
+
+    showToast("Danke für deine Reaktion! 👍");
+  }
+
+
+  /* =====================================================
+     EINZELNEN BEITRAG ANZEIGEN
+     ===================================================== */
+
+  function showPost(id) {
+
+    const post = posts.find(p => p.id === id);
+
+    if (!post) return;
+
+    alert(
+      `${post.title}\n\n` +
+      `Von: ${post.author}\n` +
+      `Kategorie: ${post.category}\n\n` +
+      `${post.content}\n\n` +
+      `Antworten: ${post.replies || 0}`
+    );
+  }
+
+
+  /* =====================================================
+     KATEGORIE FILTERN
+     ===================================================== */
+
+  function filterCategory(category) {
+
+    document.getElementById("categoryFilter").value = category;
+
+    renderPosts();
+
+    document
+      .querySelector(".section")
+      .scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+  }
+
+
+  /* =====================================================
+     ALLE BEITRÄGE
+     ===================================================== */
+
+  function showAll() {
+
+    document.getElementById("categoryFilter").value = "Alle";
+
+    document.getElementById("searchInput").value = "";
+
+    renderPosts();
+  }
+
+
+  /* =====================================================
+     KATEGORIEN SCROLLEN
+     ===================================================== */
+
+  function scrollToCategories() {
+
+    document
+      .getElementById("categories")
+      .scrollIntoView({
+        behavior: "smooth"
+      });
+  }
+
+
+  /* =====================================================
+     MODAL
+     ===================================================== */
+
+  function openModal() {
+
+    document
+      .getElementById("modal")
+      .classList.add("show");
+
+    setTimeout(() => {
+      document.getElementById("author").focus();
+    }, 100);
+  }
+
+
+  function closeModal() {
+
+    document
+      .getElementById("modal")
+      .classList.remove("show");
+  }
+
+
+  document
+    .getElementById("modal")
+    .addEventListener("click", function(event) {
+
+      if (event.target === this) {
+        closeModal();
+      }
+
+    });
+
+
+  document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+      closeModal();
+    }
+
+  });
+
+
+  /* =====================================================
+     LOCAL STORAGE
+     ===================================================== */
+
+  function savePosts() {
+
+    localStorage.setItem(
+      "hochImNordenPosts",
+      JSON.stringify(posts)
+    );
+  }
+
+
+  /* =====================================================
+     HILFSFUNKTIONEN
+     ===================================================== */
+
+  function getInitials(name) {
+
+    return name
+      .split(" ")
+      .map(word => word.charAt(0))
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
+  }
+
+
+  function escapeHTML(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+  }
+
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+      toast.classList.remove("show");
+
+    }, 2500);
+  }
+
+
+  /* =====================================================
+     START
+     ===================================================== */
+
+  renderPosts();
+
+</script>
+
+</body>
+</html>
